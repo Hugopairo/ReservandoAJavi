@@ -1,0 +1,14 @@
+{# reservas/templates/reservas/lista.html #} {% extends "reservas/base.html" %}
+{% block titulo %}Espacios{% endblock %} {% block contenido %}
+<h1>Espacios disponibles</h1>
+<ul>
+  {% for espacio in espacios %}
+  <li>
+    <a href="{% url 'reservas:detalle' espacio.id %}">{{ espacio.nombre }}</a>
+    ({{ espacio.tipo }}, aforo {{ espacio.aforo }})
+  </li>
+  {% empty %}
+  <li>No hay espacios disponibles.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
