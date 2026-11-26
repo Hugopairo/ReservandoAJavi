@@ -1,24 +1,21 @@
 # reservas/views.py
-from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
-ESPACIOS = [
-    {"id": 1, "nombre": "Aula 12", "tipo": "aula", "aforo": 30},
-    {"id": 2, "nombre": "Laboratorio de Física", "tipo": "laboratorio", "aforo": 24},
-    {"id": 3, "nombre": "Salón de actos", "tipo": "salon", "aforo": 200},
-]
+from .models import Espacio  # el punto significa "de esta misma aplicación"
 
 
-def buscar(pk):
-    for espacio in ESPACIOS:
-        if espacio["id"] == pk:
-            return espacio
-    raise Http404("El espacio no existe")
-
-
+# tarea 5
 def lista(request):
-    return render(request, "reservas/lista.html", {"espacios": ESPACIOS})
+    # pongo filtrer para que pasen los que cumplen
+    espacios = Espacio.objects.filter(activo=True)
+    # "espacios" es el nombre con el que la plantilla recibe los datos
+    return render(request, "reservas/lista.html", {"espacios": espacios})
 
 
+# fase 5 Detalle de un espacio leído de la base de datos
 def detalle(request, pk):
-    return render(request, "reservas/detalle.html", {"espacio": buscar(pk)})
+    # pk = número del espacio, viene de la URL (/espacios/3/ -> pk = 3)
+    # Busco el espacio con ese pk; si no existe, sale un error 404
+    espacio = get_object_or_404(Espacio, pk=pk)
+    # Mando el espacio a la plantilla con el nombre "espacio"
+    return render(request, "reservas/detalle.html", {"espacio": espacio})
