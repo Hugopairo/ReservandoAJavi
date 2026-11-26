@@ -1,29 +1,20 @@
 {% extends "reservas/base.html" %}
-{# [Guion, fases 2 y 7] Ficha de un espacio. "extends" usa base.html como esqueleto #}
-
-{# {{ ... }} muestra un dato #}
-{# {% ... %} hace algo, como un bucle o heredar de otra plantilla #}
-{# título de la pestaña #}
-{% block titulo %}{{ espacio.nombre }}{% endblock %}
-
-{% block contenido %}
+{# block titulo: título de la pestaña. {{ ... }} muestra un dato #}
+{% block titulo %}{{ espacio.nombre }}{% endblock %} {% block contenido %}
 <h1>{{ espacio.nombre }}</h1>
-{# | es un filtro: cambia cómo se muestra el dato #}
-{# get_tipo_display: etiqueta del tipo. yesno: texto si activo es True o False #}
+{# get_tipo_display: etiqueta del tipo. | es un filtro: yesno elige el texto según activo sea True o False #}
 <p>{{ espacio.get_tipo_display }} · Aforo: {{ espacio.aforo }} · {{ espacio.activo|yesno:"Disponible,No disponible" }}</p>
-
 <h2>Próximas reservas confirmadas</h2>
 <ul>
-  {# "reservas" llega desde get_context_data, en views.py #}
+  {# {% ... %} hace algo: este for repite una línea por cada reserva (llegan desde la vista) #}
   {% for reserva in reservas %}
-  {# filtros date y time: dan formato, por ejemplo fecha|date:"d/m/Y" -> 20/05/2027 #}
-  <li>{{ reserva.fecha|date:"d/m/Y" }} de {{ reserva.hora_inicio|time:"H:i" }} a {{ reserva.hora_fin|time:"H:i" }} ({{ reserva.usuario.username }})</li>
-  {# empty: se muestra si la lista no tiene ningún elemento #}
+  {# los filtros date y time dan formato a la fecha y a las horas #}
+  <li>{{ reserva.fecha|date:"d/m/Y" }} de {{ reserva.hora_inicio|time:"H:i" }} a {{ reserva.hora_fin|time:"H:i" }} ({{ reserva.usuario }})</li>
+  {# empty: se muestra si no hay ninguna reserva #}
   {% empty %}
   <li>No hay reservas confirmadas.</li>
   {% endfor %}
 </ul>
-
 {# la etiqueta url genera la dirección a partir del nombre de la ruta #}
-<a href="{% url 'reservas:lista' %}">Volver</a>
+<p><a href="{% url 'reservas:lista' %}">Volver al listado</a></p>
 {% endblock %}

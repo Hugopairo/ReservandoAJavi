@@ -1,15 +1,17 @@
 {# reservas/templates/reservas/lista.html #} {% extends "reservas/base.html" %}
+{# extends: usa base.html como esqueleto; cada block rellena un hueco #}
 {% block titulo %}Espacios{% endblock %} {% block contenido %}
 <h1>Espacios disponibles</h1>
 <ul>
   {# {% ... %} hace algo: este for repite el bloque por cada espacio #}
   {% for espacio in espacios %}
   <li>
-    {# {{ ... }} muestra un dato #}
-    {# get_absolute_url está en el modelo; get_tipo_display muestra la etiqueta del tipo #}
+    {# {{ ... }} muestra un dato. get_absolute_url (del modelo) da la dirección del espacio #}
     <a href="{{ espacio.get_absolute_url }}">{{ espacio.nombre }}</a>
+    {# get_tipo_display muestra la etiqueta del tipo, por ejemplo "Pista deportiva" #}
     ({{ espacio.get_tipo_display }}, aforo {{ espacio.aforo }})
   </li>
+  {# empty: se muestra si no hay ningún espacio #}
   {% empty %}
   <li>No hay espacios disponibles.</li>
   {% endfor %}
