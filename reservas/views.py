@@ -37,7 +37,6 @@ class DetalleEspacio(DetailView):
                 estado=Reserva.Estado.CONFIRMADA,  # solo las confirmadas
             )
             .select_related("usuario")  # trae el usuario en la misma consulta
-            .order_by("fecha")  # ordenadas por fecha
         )
 
         return contexto

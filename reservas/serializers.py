@@ -11,7 +11,7 @@ from .models import Espacio, Reserva
 class EspacioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Espacio
-        fields = "__all__"
+        fields = ["id", "nombre", "tipo", "aforo", "activo"]
 
 
 # serializador de reservas: además aplica las reglas de la fase 5
