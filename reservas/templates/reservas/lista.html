@@ -2,10 +2,13 @@
 {% block titulo %}Espacios{% endblock %} {% block contenido %}
 <h1>Espacios disponibles</h1>
 <ul>
+  {# {% ... %} hace algo: este for repite el bloque por cada espacio #}
   {% for espacio in espacios %}
   <li>
-    <a href="{% url 'reservas:detalle' espacio.id %}">{{ espacio.nombre }}</a>
-    ({{ espacio.tipo }}, aforo {{ espacio.aforo }})
+    {# {{ ... }} muestra un dato #}
+    {# get_absolute_url está en el modelo; get_tipo_display muestra la etiqueta del tipo #}
+    <a href="{{ espacio.get_absolute_url }}">{{ espacio.nombre }}</a>
+    ({{ espacio.get_tipo_display }}, aforo {{ espacio.aforo }})
   </li>
   {% empty %}
   <li>No hay espacios disponibles.</li>
