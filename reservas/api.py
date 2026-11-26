@@ -3,16 +3,20 @@ from datetime import date
 from django.db.models import ProtectedError
 from rest_framework import serializers, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .consultas import ocupacion
 from .models import Espacio, Reserva
+from .permissions import EsPersonalOSoloLectura, EsPropietarioOSoloLectura
 from .serializers import EspacioSerializer, ReservaSerializer
 
 
 # Fase 9: un ModelViewSet ya trae listar, ver, crear, modificar y borrar
 class EspacioViewSet(viewsets.ModelViewSet):
     serializer_class = EspacioSerializer
+    # fase 10: cualquiera lee; solo el personal crea, modifica o borra
+    permission_classes = [EsPersonalOSoloLectura]
 
     # qué espacios devuelve la API, según los filtros de la dirección
     def get_queryset(self):
@@ -76,6 +80,8 @@ class EspacioViewSet(viewsets.ModelViewSet):
 # API de reservas
 class ReservaViewSet(viewsets.ModelViewSet):
     serializer_class = ReservaSerializer
+    # fase 10: se exigen los dos: identificarse y, para escribir, ser el propietario
+    permission_classes = [IsAuthenticated, EsPropietarioOSoloLectura]
 
     def get_queryset(self):
         # select_related trae espacio y usuario en la misma consulta

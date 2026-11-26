@@ -45,6 +45,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # fase 10: añade las cabeceras CORS; tiene que ir antes de CommonMiddleware
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -154,12 +156,12 @@ LOGIN_URL = "login"  # a dónde se manda a quien no ha iniciado sesión
 LOGIN_REDIRECT_URL = "reservas:lista"  # a dónde se va después de entrar
 LOGOUT_REDIRECT_URL = "reservas:lista"  # a dónde se va después de salir
 
-# fase 9: configuración de Django REST Framework
+# fase 9 y 10: configuración de Django REST Framework
 REST_FRAMEWORK = {
     # quién eres: cómo se sabe quién hace la petición
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        # usuario y contraseña en cada petición (curl -u)
-        "rest_framework.authentication.BasicAuthentication",
+        # token en la cabecera; va el primero para que sin credenciales sea 401
+        "rest_framework.authentication.TokenAuthentication",
         # la sesión ya iniciada en la web
         "rest_framework.authentication.SessionAuthentication",
     ],
@@ -169,3 +171,8 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
 }
+# fase 10: orígenes permitidos para CORS (frontend)
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
