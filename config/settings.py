@@ -153,3 +153,19 @@ LOGGING = {
 LOGIN_URL = "login"  # a dónde se manda a quien no ha iniciado sesión
 LOGIN_REDIRECT_URL = "reservas:lista"  # a dónde se va después de entrar
 LOGOUT_REDIRECT_URL = "reservas:lista"  # a dónde se va después de salir
+
+# fase 9: configuración de Django REST Framework
+REST_FRAMEWORK = {
+    # quién eres: cómo se sabe quién hace la petición
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        # usuario y contraseña en cada petición (curl -u)
+        "rest_framework.authentication.BasicAuthentication",
+        # la sesión ya iniciada en la web
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    # qué puedes hacer (permisos). No hay paginación, los listados son listas JSON
+    "DEFAULT_PERMISSION_CLASSES": [
+        # leer puede cualquiera; para escribir hay que identificarse
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+}
