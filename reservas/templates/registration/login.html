@@ -1,0 +1,14 @@
+{% extends "reservas/base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block contenido %}
+<h1>Entrar</h1>
+<form method="post">
+  {# csrf_token: impide que otra web envíe este formulario #}
+  {% csrf_token %}
+  {# form lo manda la vista de Django; as_p pone cada campo en un párrafo #}
+  {{ form.as_p }}
+  {# next: la página a la que se quería ir antes de iniciar sesión #}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button type="submit">Entrar</button>
+</form>
+{% endblock %}

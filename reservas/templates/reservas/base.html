@@ -8,6 +8,19 @@
   <body>
     <header>
       <a href="{% url 'reservas:lista' %}">Espacios</a>
+      {# el menú cambia según si se ha iniciado sesión o no #}
+      {% if user.is_authenticated %}
+      <a href="{% url 'reservas:nueva' %}">Nueva reserva</a>
+      <a href="{% url 'reservas:mias' %}">Mis reservas</a>
+      <span>{{ user.username }}</span>
+      {# cerrar sesión solo admite POST: por eso es un formulario y no un enlace #}
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Salir</button>
+      </form>
+      {% else %}
+      <a href="{% url 'login' %}">Entrar</a>
+      {% endif %}
     </header>
     <main>{% block contenido %}{% endblock %}</main>
   </body>

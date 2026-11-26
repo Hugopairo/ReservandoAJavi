@@ -149,3 +149,7 @@ LOGGING = {
         },
     },
 }
+# fase 8: urls de login y logout
+LOGIN_URL = "login"  # a dónde se manda a quien no ha iniciado sesión
+LOGIN_REDIRECT_URL = "reservas:lista"  # a dónde se va después de entrar
+LOGOUT_REDIRECT_URL = "reservas:lista"  # a dónde se va después de salir
